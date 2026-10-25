@@ -18,25 +18,18 @@
 
 ## 📌 Overview
 
-Matrix Synapse homeserver configuration hardening auditor
+OMatrixX is an offline, read-only Matrix Synapse homeserver configuration auditor. It parses `homeserver.yaml` (stdlib YAML subset), related workers, reverse proxies, well-known files, and coturn when TURN is configured. It reviews registration, secrets, listeners, federation, SSRF, media, rate limits, and TLS key permissions with score/grade and multi-format export.
 
 ---
 
 ## ✨ Features
 
-- Offline, read-only audit of Synapse homeserver.yaml (stdlib YAML subset parser with line tracking)
-- Registration, shared-secret, macaroon / form secret strength and placeholder detection
-- Listener exposure — tls:false on wildcard binds, x_forwarded spoofing, metrics / manhole / replication
-- Federation, public-room directory, key-server trust, profile / user-directory privacy checks
-- URL-preview SSRF and ip_range_blacklist coverage
-- Rate limits, upload size, password policy, bcrypt
-- Postgres / SQLite connection checks, signing.key and TLS key permissions, media store permissions
-- Workers (workers/*.yaml), log_config, appservices
-- nginx / Caddy reverse proxies fronting /_matrix and /_synapse/admin, .well-known / Element JSON files
-- coturn turnserver.conf (only when Synapse uses TURN)
-- Synapse version EOL hint, CWE + MITRE ATT&CK mapping
-- Score + grade A+…F, TXT / MD / JSON / CSV / SARIF
-- Hardened templates, --demo self-test, --fail-on
+- Offline audit of Synapse homeserver.yaml with line-tracked stdlib YAML subset parser
+- Registration, shared-secret, and macaroon/form secret strength and placeholder detection
+- Listener exposure (tls:false on wildcards, x_forwarded, metrics/manhole/replication)
+- Federation, public-room directory, key-server trust, profile/user-directory privacy, URL-preview SSRF
+- Workers, log_config, appservices, nginx/Caddy fronting `/_matrix`, well-known/Element JSON, coturn TURN
+- Score/grade, templates, CWE+ATT&CK mapping, TXT/MD/JSON/CSV/SARIF, `--demo` and fail-on gates
 
 ---
 
@@ -50,7 +43,10 @@ Matrix Synapse homeserver configuration hardening auditor
 ## 🚀 Usage
 
 ```bash
-./OMatrixX
+./OMatrixX -c homeserver.yaml --scan
+./OMatrixX --root ./synapse -f sarif -o matrix.sarif --fail-on high
+./OMatrixX --demo --list-rules
+./OMatrixX --help
 ```
 
 ---
